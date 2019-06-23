@@ -77,7 +77,8 @@ const CommandProcessor = new (require('./commandsprocessor'))([
                 let toBlock = arguments[0].value;
                 if (!isNaN(parseInt(toBlock))) {
                     blocked.push(parseInt(toBlock));
-                } else replyToMessage("Wrong 1st argument type");
+                    replyToMessage(msg, "User with ID " + toBlock + " blocked!")
+                } else replyToMessage(msg,"Wrong 1st argument type");
             }
         }
     },
@@ -91,7 +92,12 @@ const CommandProcessor = new (require('./commandsprocessor'))([
             } else {
                 let toBlock = arguments[0].value;
                 if (!isNaN(parseInt(toBlock))) {
-                    blocked.remove(parseInt(toBlock));
+                    if (blocked.some(id => id == message.chat.id)) {
+                        blocked.remove(parseInt(toBlock));
+                        replyToMessage(msg, "User with ID " + toBlock + " unblocked!")
+                    } else {
+                        replyToMessage(msg, "User with ID " + toBlock + " is not blocked!")
+                    }
                 } else replyToMessage("Wrong 1st argument type");
             }
         }
@@ -102,6 +108,9 @@ api.on('message', function (message) {
     if (args.debug === 'true') console.log(message);
     if (message.chat.type === "private") {
         if (message.text !== "/start") {
+            if (args.debug === 'true') console.log(blocked);
+            if (args.debug === 'true') console.log(message.chat.id);
+            if (args.debug === 'true') console.log(blocked.some(id => id == message.chat.id));
             if (!blocked.some(id => id == message.chat.id)) {
                 replyToMessage(message, "Спасибо за предложение!");
                 api.sendMessage({
