@@ -113,14 +113,17 @@ api.on('message', function (message) {
             if (args.debug === 'true') console.log(blocked.some(id => id == message.chat.id));
             if (!blocked.some(id => id == message.chat.id)) {
                 replyToMessage(message, "Спасибо за предложение!");
-                api.sendMessage({
-                    chat_id: GROUP_ID,
-                    text: "Предложение от " + generateString(message.chat)
-                });
                 api.forwardMessage({
                     chat_id: GROUP_ID,
                     from_chat_id: message.chat.id,
                     message_id: message.message_id
+                }).then(function(data) {
+                    if (args.debug === 'true') console.log(data);
+                    api.sendMessage({
+                        chat_id: GROUP_ID,
+                        text: "Предложение от " + generateString(message.chat),
+                        reply_to_message_id: data.message_id
+                    });
                 });
             } else {
                 replyToMessage(message, "Вы заблокированы! Обращайтесь к админам @" + CHANNEL_ID)
