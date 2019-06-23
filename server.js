@@ -29,7 +29,7 @@ api.on('message', function (message) {
             });
         } else api.sendMessage({
             chat_id: message.chat.id,
-            text: "Здравствуйте!\nЭто бот-предложка канала Фридрих IV (@fridrixxx).\nКидайте сюда свои смехуечки.",
+            text: "Здравствуйте!\nЭто бот-предложка канала Фридрих IV (@" + CHANNEL_ID + ").\nКидайте сюда свои смехуечки.",
         })
     }
 });
