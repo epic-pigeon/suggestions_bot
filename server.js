@@ -32,7 +32,7 @@ api.on('message', function (message) {
             });
             api.sendMessage({
                 chat_id: GROUP_ID,
-                text: "Предложение от " + generateString(message.chat, message.from)
+                text: "Предложение от " + generateString(message.chat)
             });
             api.forwardMessage({
                 chat_id: GROUP_ID,
@@ -46,7 +46,7 @@ api.on('message', function (message) {
     }
 });
 
-function generateString(chat, from) {
+function generateString(chat) {
     let message = "";
     if (chat.first_name) message += chat.first_name + " ";
     if (chat.last_name) message += chat.last_name + " ";
