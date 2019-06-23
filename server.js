@@ -53,7 +53,7 @@ const CommandProcessor = new (require('./commandsprocessor'))([
                 let commandNames = [];
                 self.commands.forEach(command => {commandNames.push(command.name)});
                 string += commandNames.join('\n\t');
-                msg.reply(string);
+                replyToMessage(msg, string);
             } else if (arguments.length === 1) {
                 let command = arguments[0].value;
                 let commandObject;
