@@ -1,6 +1,18 @@
 const Telegram = require('telegram-bot-api');
 const CHANNEL_ID = "fridrixxx";
 const GROUP_ID = -1001366233526;
+let args = {};
+for (let arg of process.argv.slice(2)) {
+    let arr = arg.split("=");
+    if (arr.length === 1) {
+        args[arr[1]] = "";
+    } else {
+        for (let key of arr.slice(0, arr.length - 1)) {
+            args[key] = arr[arr.length - 1];
+        }
+    }
+}
+if (args.debug === 'true') console.log(args);
 
 const api = new Telegram({
     token: '830368677:AAFV5f2EtaGi1BQ-tuLeUM_U5FhQZbDKHrs',
@@ -10,7 +22,7 @@ const api = new Telegram({
 });
 
 api.on('message', function (message) {
-    console.log(message);
+    if (args.debug === 'true') console.log(message);
     if (message.chat.type === "private") {
         if (message.text !== "/start") {
             api.sendMessage({
