@@ -35,11 +35,15 @@ const api = new Telegram({
 });
 
 function replyToMessage(msg, text) {
-    api.sendMessage({
-        chat_id: msg.chat.id,
-        text: text,
-        reply_to_message_id: msg.message_id
-    });
+    try {
+        api.sendMessage({
+            chat_id: msg.chat.id,
+            text: text,
+            reply_to_message_id: msg.message_id
+        });
+    } catch (e) {
+        console.log(e);
+    }
 }
 
 const CommandProcessor = new (require('./commandsprocessor'))([
@@ -119,11 +123,15 @@ api.on('message', function (message) {
                     message_id: message.message_id
                 }).then(function(data) {
                     if (args.debug === 'true') console.log(data);
-                    api.sendMessage({
-                        chat_id: GROUP_ID,
-                        text: "Предложение от " + generateString(message.chat),
-                        reply_to_message_id: data.message_id
-                    });
+                    try {
+                        api.sendMessage({
+                            chat_id: GROUP_ID,
+                            text: "Предложение от " + generateString(message.chat),
+                            reply_to_message_id: data.message_id
+                        });
+                    } catch (e) {
+                        console.log(e);
+                    }
                 });
             } else {
                 replyToMessage(message, "Вы заблокированы! Обращайтесь к админам @" + CHANNEL_ID)
