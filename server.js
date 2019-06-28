@@ -96,7 +96,7 @@ const CommandProcessor = new (require('./commandsprocessor'))([
                 let toBlock = arguments[0].value;
                 if (args.debug === "true") console.log(toBlock);
                 if (!isNaN(parseInt(toBlock))) {
-                    if (blocked.some(id => id == message.chat.id)) {
+                    if (blocked.some(id => id == msg.chat.id)) {
                         blocked.remove(parseInt(toBlock));
                         replyToMessage(msg, "User with ID " + toBlock + " unblocked!")
                     } else {
