@@ -94,6 +94,7 @@ const CommandProcessor = new (require('./commandsprocessor'))([
                 replyToMessage(msg, "Not enough arguments!")
             } else {
                 let toBlock = arguments[0].value;
+                if (args.debug === "true") console.log(toBlock);
                 if (!isNaN(parseInt(toBlock))) {
                     if (blocked.some(id => id == message.chat.id)) {
                         blocked.remove(parseInt(toBlock));
@@ -101,7 +102,7 @@ const CommandProcessor = new (require('./commandsprocessor'))([
                     } else {
                         replyToMessage(msg, "User with ID " + toBlock + " is not blocked!")
                     }
-                } else replyToMessage("Wrong 1st argument type");
+                } else replyToMessage(msg, "Wrong 1st argument type");
             }
         }
     }
