@@ -2,6 +2,9 @@ const Telegram = require('telegram-bot-api');
 const CHANNEL_ID = "fridrixxx";
 const GROUP_ID = -1001366233526;
 const blocked = [];
+const messages = {};
+const LIMIT = 10;
+const TIME = 60 * 1000;
 
 Array.prototype.remove = function() {
     let what, a = arguments, L = a.length, ax;
@@ -56,7 +59,7 @@ const CommandProcessor = new (require('./commandsprocessor'))([
                 replyToMessage(msg, string);
             } else if (arguments.length === 1) {
                 let command = arguments[0].value;
-                let commandObject;
+                let commandObject = undefined;
                 self.commands.forEach(comm => {
                     if (comm.name === command.toLowerCase()) commandObject = comm;
                 });
@@ -112,19 +115,41 @@ api.on('message', function (message) {
             if (args.debug === 'true') console.log(message.chat.id);
             if (args.debug === 'true') console.log(blocked.some(id => id == message.chat.id));
             if (!blocked.some(id => id == message.chat.id)) {
-                replyToMessage(message, "Спасибо за предложение!");
-                api.forwardMessage({
-                    chat_id: GROUP_ID,
-                    from_chat_id: message.chat.id,
-                    message_id: message.message_id
-                }).then(function(data) {
-                    if (args.debug === 'true') console.log(data);
+                if (messages[message.chat.id]) {
+                    let data = messages[message.chat.id];
+                    if (data) {
+                        if (data.time + TIME < new Date().getTime()) {
+                            messages[message.chat.id] = {
+                                time: new Date().getTime(),
+                                count: 1,
+                            };
+                        } else if (data.count < LIMIT) {
+                            data.count++;
+                            react();
+                        } else;
+                    }
+                } else {
+                    messages[message.chat.id] = {
+                        time: new Date().getTime(),
+                        count: 1,
+                    };
+                }
+
+                function react() {
+                    replyToMessage(message, "Спасибо за предложение!");
+                    api.forwardMessage({
+                        chat_id: GROUP_ID,
+                        from_chat_id: message.chat.id,
+                        message_id: message.message_id
+                    }).then(function (data) {
+                        if (args.debug === 'true') console.log(data);
                         api.sendMessage({
                             chat_id: GROUP_ID,
                             text: "Предложение от " + generateString(message.chat),
                             reply_to_message_id: data.message_id
                         }).catch(console.log);
-                }).catch(console.log);
+                    }).catch(console.log);
+                }
             } else {
                 replyToMessage(message, "Вы заблокированы! Обращайтесь к админам @" + CHANNEL_ID)
             }
