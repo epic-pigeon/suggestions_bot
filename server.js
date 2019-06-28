@@ -35,15 +35,11 @@ const api = new Telegram({
 });
 
 function replyToMessage(msg, text) {
-    try {
         api.sendMessage({
             chat_id: msg.chat.id,
             text: text,
             reply_to_message_id: msg.message_id
-        });
-    } catch (e) {
-        console.log(e);
-    }
+        }).catch(console.log);
 }
 
 const CommandProcessor = new (require('./commandsprocessor'))([
@@ -123,23 +119,19 @@ api.on('message', function (message) {
                     message_id: message.message_id
                 }).then(function(data) {
                     if (args.debug === 'true') console.log(data);
-                    try {
                         api.sendMessage({
                             chat_id: GROUP_ID,
                             text: "Предложение от " + generateString(message.chat),
                             reply_to_message_id: data.message_id
-                        });
-                    } catch (e) {
-                        console.log(e);
-                    }
-                });
+                        }).catch(console.log);
+                }).catch(console.log);
             } else {
                 replyToMessage(message, "Вы заблокированы! Обращайтесь к админам @" + CHANNEL_ID)
             }
         } else api.sendMessage({
             chat_id: message.chat.id,
             text: "Здравствуйте!\nЭто бот-предложка канала Фридрих IV (@" + CHANNEL_ID + ").\nКидайте сюда свои смехуечки.",
-        })
+        }).catch(console.log)
     } else if (message.chat.id == GROUP_ID) {
         if (message.text.startsWith("/")) {
             let command = message.text.slice(1);
