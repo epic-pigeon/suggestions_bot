@@ -115,6 +115,7 @@ api.on('message', function (message) {
             if (args.debug === 'true') console.log(message.chat.id);
             if (args.debug === 'true') console.log(blocked.some(id => id == message.chat.id));
             if (!blocked.some(id => id == message.chat.id)) {
+                if (args.debug === 'true') console.log(messages);
                 if (messages[message.chat.id]) {
                     let data = messages[message.chat.id];
                     if (data) {
