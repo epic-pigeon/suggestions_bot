@@ -134,6 +134,7 @@ api.on('message', function (message) {
                         time: new Date().getTime(),
                         count: 1,
                     };
+                    react();
                 }
 
                 function react() {
