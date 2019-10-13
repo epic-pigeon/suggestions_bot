@@ -17,7 +17,7 @@ Array.prototype.remove = function() {
     return this;
 };
 
-let args = {};
+const args = {};
 for (let arg of process.argv.slice(2)) {
     let arr = arg.split("=");
     if (arr.length === 1) {
@@ -118,17 +118,16 @@ api.on('message', function (message) {
                 if (args.debug === 'true') console.log(messages);
                 if (messages[message.chat.id]) {
                     let data = messages[message.chat.id];
-                    if (data) {
                         if (data.time + TIME < new Date().getTime()) {
                             messages[message.chat.id] = {
                                 time: new Date().getTime(),
                                 count: 1,
                             };
+                            react();
                         } else if (data.count < LIMIT) {
                             data.count++;
                             react();
                         } else;
-                    }
                 } else {
                     messages[message.chat.id] = {
                         time: new Date().getTime(),
