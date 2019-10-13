@@ -118,16 +118,16 @@ api.on('message', function (message) {
                 if (args.debug === 'true') console.log(messages);
                 if (messages[message.chat.id]) {
                     let data = messages[message.chat.id];
-                        if (data.time + TIME < new Date().getTime()) {
+                        if (data.time + TIME < Date.now()) {
                             messages[message.chat.id] = {
-                                time: new Date().getTime(),
-                                count: 1,
+                                time: Date.now(),
+                                count: 0,
                             };
-                            react();
-                        } else if (data.count < LIMIT) {
+                        }
+                        if (data.count < LIMIT) {
                             data.count++;
                             react();
-                        } else;
+                        }
                 } else {
                     messages[message.chat.id] = {
                         time: new Date().getTime(),
