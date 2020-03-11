@@ -48,11 +48,11 @@ function replyToMessage(msg, text) {
 const CommandProcessor = new (require('./commandsprocessor'))([
     {
         name: "help",
-        description: "Helps with understanding commands :)",
+        description: "Помогает с пониманием команд",
         usage: "help ?command",
         action: function (msg, arguments, self) {
             if (arguments.length === 0) {
-                let string = 'All commands list:\n\t';
+                let string = 'Все комманды:\n\t';
                 let commandNames = [];
                 self.commands.forEach(command => {commandNames.push(command.name)});
                 string += commandNames.join('\n\t');
@@ -63,49 +63,49 @@ const CommandProcessor = new (require('./commandsprocessor'))([
                 self.commands.forEach(comm => {
                     if (comm.name === command.toLowerCase()) commandObject = comm;
                 });
-                if (typeof commandObject === "undefined") throw {message: "Such a command doesn't exist"};
-                let string = "Command name: " + commandObject.name + "\nCommand description: " + commandObject.description + "\nCommand usage: " + commandObject.usage + (commandObject.adminOnly ? "\nAdmin only!" : "");
+                if (typeof commandObject === "undefined") throw {message: "Такая команда не существует"};
+                let string = "Название команды: " + commandObject.name + "\nОписание команды: " + commandObject.description + "\nИспользование команды: " + commandObject.usage + (commandObject.adminOnly ? "\nТолько для администраторов!" : "");
                 replyToMessage(msg, string)
             }
         }
     },
     {
         name: "block",
-        description: "Restricts user from sending suggestions",
+        description: "Не дает даунам присылать хуйню",
         usage: "block <user id>",
         action: function (msg, arguments, self) {
             if (arguments.length === 0) {
-                replyToMessage(msg, "Not enough arguments!")
+                replyToMessage(msg, "Недостаточно аргументов!")
             } else {
                 let toBlock = arguments[0].value;
                 if (!isNaN(parseInt(toBlock))) {
                     if (blocked.some(id => id == parseInt(toBlock))) {
-                        replyToMessage(msg, "User with ID " + toBlock + " is already blocked!")
+                        replyToMessage(msg, "Пользователь с ID " + toBlock + " уже заблокирован!")
                     } else {
                         blocked.push(parseInt(toBlock));
-                        replyToMessage(msg, "User with ID " + toBlock + " blocked!")
+                        replyToMessage(msg, "Пользователь с ID " + toBlock + " заблокирован!")
                     }
-                } else replyToMessage(msg,"Wrong 1st argument type");
+                } else replyToMessage(msg,"Первый аргумент должен быть числом");
             }
         }
     },
     {
         name: "unblock",
-        description: "Returns the right to send messages",
+        description: "Разрешает заблокированным даунам продолжать слать хуйню",
         usage: "unblock <user id>",
         action: function (msg, arguments, self) {
             if (arguments.length === 0) {
-                replyToMessage(msg, "Not enough arguments!")
+                replyToMessage(msg, "Недостаточно аргументов!")
             } else {
                 let toBlock = arguments[0].value;
                 if (!isNaN(parseInt(toBlock))) {
                     if (blocked.some(id => id == parseInt(toBlock))) {
                         blocked.remove(parseInt(toBlock));
-                        replyToMessage(msg, "User with ID " + toBlock + " unblocked!")
+                        replyToMessage(msg, "Пользователь с ID " + toBlock + " разблокирован!")
                     } else {
-                        replyToMessage(msg, "User with ID " + toBlock + " is not blocked!")
+                        replyToMessage(msg, "Пользователь с ID " + toBlock + " не заблокирован!")
                     }
-                } else replyToMessage(msg, "Wrong 1st argument type");
+                } else replyToMessage(msg, "Первый аргумент должен быть числом");
             }
         }
     }
@@ -160,7 +160,7 @@ api.on('message', function (message) {
             }
         } else api.sendMessage({
             chat_id: message.chat.id,
-            text: "Здравствуйте!\nЭто бот-предложка канала ЛИцеиСТ (@" + CHANNEL_ID + ").\nКидайте сюда свои смехуечки.",
+            text: "Здравствуйте!\nЭто бот-предложка канала ЛИцеиСТ (@" + CHANNEL_ID + ").\nКидайте сюда свое что угодно.",
         }).catch(console.log)
     } else if (message.chat.id == GROUP_ID) {
         if (message.text.startsWith("/")) {
