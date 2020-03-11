@@ -1,6 +1,6 @@
 const Telegram = require('telegram-bot-api');
-const CHANNEL_ID = "fridrixxx";
-const GROUP_ID = -1001366233526;
+const CHANNEL_ID = "LIcseiST";
+//const GROUP_ID = -1001366233526;
 const blocked = [];
 const messages = {};
 const LIMIT = 10;
@@ -31,7 +31,7 @@ for (let arg of process.argv.slice(2)) {
 if (args.debug === 'true') console.log(args);
 
 const api = new Telegram({
-    token: '830368677:AAFV5f2EtaGi1BQ-tuLeUM_U5FhQZbDKHrs',
+    token: '984905778:AAGGx-qC5VRb9PyCO-IelYM8TVqAbaFkIGw',
     updates: {
         enabled: true
     }
@@ -79,8 +79,12 @@ const CommandProcessor = new (require('./commandsprocessor'))([
             } else {
                 let toBlock = arguments[0].value;
                 if (!isNaN(parseInt(toBlock))) {
-                    blocked.push(parseInt(toBlock));
-                    replyToMessage(msg, "User with ID " + toBlock + " blocked!")
+                    if (blocked.some(id => id == parseInt(toBlock))) {
+                        replyToMessage(msg, "User with ID " + toBlock + " is already blocked!")
+                    } else {
+                        blocked.push(parseInt(toBlock));
+                        replyToMessage(msg, "User with ID " + toBlock + " blocked!")
+                    }
                 } else replyToMessage(msg,"Wrong 1st argument type");
             }
         }
@@ -156,7 +160,7 @@ api.on('message', function (message) {
             }
         } else api.sendMessage({
             chat_id: message.chat.id,
-            text: "Здравствуйте!\nЭто бот-предложка канала Фридрих IV (@" + CHANNEL_ID + ").\nКидайте сюда свои смехуечки.",
+            text: "Здравствуйте!\nЭто бот-предложка канала ЛИцеиСТ (@" + CHANNEL_ID + ").\nКидайте сюда свои смехуечки.",
         }).catch(console.log)
     } else if (message.chat.id == GROUP_ID) {
         if (message.text.startsWith("/")) {
