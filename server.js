@@ -1,6 +1,6 @@
 const Telegram = require('telegram-bot-api');
 const CHANNEL_ID = "LIcseiST";
-//const GROUP_ID = -1001366233526;
+const GROUP_ID = -1001479885834;
 const blocked = [];
 const messages = {};
 const LIMIT = 10;
