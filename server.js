@@ -3,8 +3,17 @@ const CHANNEL_ID = "LIcseiST";
 const GROUP_ID = -1001479885834;
 const blocked = [];
 const messages = {};
-const LIMIT = 10;
+const LIMIT = 5;
 const TIME = 60 * 1000;
+
+function getAcceptedResponse() {
+    let items = [
+        "Готово!",
+        "Принято.",
+        "Ваш пост был принят к рассмотрению."
+    ];
+    return items[Math.floor(Math.random() * items.length)];
+}
 
 Array.prototype.remove = function() {
     let what, a = arguments, L = a.length, ax;
@@ -141,7 +150,7 @@ api.on('message', function (message) {
                 }
 
                 function react() {
-                    replyToMessage(message, "Спасибо за предложение!");
+                    replyToMessage(message, getAcceptedResponse());
                     api.forwardMessage({
                         chat_id: GROUP_ID,
                         from_chat_id: message.chat.id,
@@ -156,11 +165,11 @@ api.on('message', function (message) {
                     }).catch(console.log);
                 }
             } else {
-                replyToMessage(message, "Вы заблокированы! Обращайтесь к админам @" + CHANNEL_ID)
+                replyToMessage(message, "Вы были заблокированы по причине спама! Для получения подробной информации обращайтесь к администрации @" + CHANNEL_ID)
             }
         } else api.sendMessage({
             chat_id: message.chat.id,
-            text: "Здравствуйте!\nЭто бот-предложка канала ЛИцеиСТ (@" + CHANNEL_ID + ").\nКидайте сюда свое что угодно.",
+            text: "Привет! Это бот-предложка для канала @" + CHANNEL_ID + ". Сюда ты можешь прислать контент для публикации на канале.",
         }).catch(console.log)
     } else if (message.chat.id == GROUP_ID) {
         if (message.text.startsWith("/")) {
